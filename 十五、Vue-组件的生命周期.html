@@ -1,0 +1,131 @@
+<!DOCTYPE html>
+<html>
+	<head>
+		<meta charset="utf-8">
+		<title></title>
+	</head>
+	<body>
+		<div id='app'>
+			<App></App>
+		</div>
+	</body>
+	<script type="text/javascript" src="js/vue.min.js">
+
+	</script>
+	<script type="text/javascript">
+		/*
+		生命周期钩子(函数)
+		beforeCreate
+		created
+		beforeMount
+		mounted
+		beforeUpdate
+		updated
+		activated
+		deactivated
+		beforeDestroy
+		destroyed
+		errorCaptured
+		*/
+
+
+		Vue.component("Test", {
+			data() {
+				return {
+					msg: 'hello',
+				}
+			},
+			template: `
+				<div>
+					<div>{{msg}}</div>
+					<button @click='changerHandeler'>改变</button>
+				</div>
+				
+			`,
+			methods: {
+				changerHandeler() {
+					this.msg = this.msg + '😂'
+				}
+			},
+			beforeCreate: function() {
+				// 组件创建之前
+				console.log(this.msg);
+			},
+			created: function() {
+				// 组件创建之后
+				// 在created这个方法中可以操作后端的数据  数据驱动试图
+				// 应用：发起Ajax请求
+				console.log(this.msg);
+			},
+
+			beforeMount: function() {
+				// 挂在数据到DOM之前会调用此方法
+				console.log(document.getElementById("app"));
+			},
+			mounted: function() {
+				// 挂在数据到DOM之后会调用此方法
+				// 应用：操作DOM
+				console.log(document.getElementById("app"));
+			},
+
+			beforeUpdate: function() {
+				// 在更新DOM之前调用   应用:可以获取原始DOM
+				console.log(document.getElementById("app").innerHTML); // 查看DOM结构
+			},
+			updated: function() {
+				// 在更新DOM之后调用   应用:可以获取最新的DOM 
+				console.log(document.getElementById("app").innerHTML); // 查看DOM结构
+			},
+
+			beforeDestroy: function() {
+				// 组件销毁之前
+				console.log("创建组件之前")
+			},
+			destroyed: function() {
+				// 组件销毁之后
+				console.log("销毁组件之后")
+			},
+
+			activated: function() {
+				// 组件被激活了
+				console.log("组件被激活了")
+			},
+			deactivated: function() {
+				// 组件被停用了
+				console.log("组件被停用了")
+			},
+		})
+
+		var App = {
+			data() {
+				return {
+					isShow: true
+				}
+			},
+			// Vue内置组件<keep-alive></keep-alive>
+			// 缓存机制：能在组件的切换过程中将所有状态保存在内存中，防止重复渲染DOM
+			template: `
+				<div class='app'>
+					<keep-alive>
+						<Test v-if='isShow'/>
+					</keep-alive>
+					<button @click='isShow = !isShow'>创建销毁组件</button>
+				
+				</div>
+			
+			`,
+		}
+
+		new Vue({
+			el: '#app',
+			data() {
+				return {
+
+				}
+			},
+			components: {
+				App
+			},
+		});
+	</script>
+</html>

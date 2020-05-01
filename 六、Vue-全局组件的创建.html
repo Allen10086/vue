@@ -1,0 +1,114 @@
+<!DOCTYPE html>
+<html>
+	<head>
+		<meta charset="utf-8">
+		<title></title>
+	</head>
+	<body>
+		<div id="app">
+
+
+		</div>
+
+	</body>
+	<script type="text/javascript" src="js/vue.min.js">
+
+	</script>
+
+	<script type="text/javascript">
+		// 声明全局组件 可以在任意组件中进行使用  Vue.componet('组件名称',{template:``,})
+		Vue.component('Vbtn', { // 声明并且已经挂载到全局 可以在任意地方使用
+			template: `
+				<button>按钮</button>
+			`,
+		});
+
+
+		// 声明组件并挂载到App组件中
+		var Vheader = {
+			data() {
+				return {
+
+				}
+			},
+			template: `
+				<div>
+					我是头部组件
+					<Vbtn/>
+				</dov>
+			`,
+		};
+
+		var Vaside = {
+			data() {
+				return {
+
+				}
+			},
+			template: `
+				<div>
+					我是侧边栏组件
+					<Vbtn/>
+				</div>
+			`,
+		}
+
+		var Vcontent = {
+			data() {
+				return {
+
+				}
+			},
+			template: `
+				<div>
+					我是内容组件
+					<Vbtn/>
+				</div>
+			`,
+		}
+
+
+
+
+		// 1、声明组件   组件内的data一定是一个函数，必须有返回值空值也行
+		var App = {
+			data() {
+				return {
+
+				}
+			},
+			template: `
+				<div>
+					<Vheader/>
+					<div>
+						<Vaside/>
+						<div>
+							<Vcontent/>
+						</div>
+					</div>
+				</div>
+				
+			`,
+			components: {
+				Vheader,
+				Vaside,
+				Vcontent
+			},
+		};
+
+		new Vue({
+			el: "#app",
+			data() {
+				return {
+
+				}
+			},
+			// 2、挂载
+			components: {
+				App
+			},
+			// 3、使用
+			template: `<App/>`,
+		});
+	</script>
+</html>

@@ -1,0 +1,155 @@
+<!DOCTYPE html>
+<html>
+	<head>
+		<meta charset="utf-8">
+		<title></title>
+		<style type="text/css">
+			.default {
+				display: inline-block;
+				line-height: 1;
+				white-space: nowrap;
+				cursor: pointer;
+				background: #fff;
+				border: 1px solid #dcdfe6;
+				color: #606266;
+				-webkit-appearance: none;
+				text-align: center;
+				box-sizing: border-box;
+				outline: none;
+				margin: 0;
+				transition: .1s;
+				font-weight: 500;
+				-moz-user-select: none;
+				-webkit-user-select: none;
+				-ms-user-select: none;
+				padding: 12px 20px;
+				font-size: 14px;
+				border-radius: 4px;
+			}
+
+			.primary {
+				color: #fff;
+				background-color: #409eff;
+				border-color: #409eff;
+			}
+
+			.success {
+				color: #fff;
+				background-color: #67c23a;
+				border-color: #67c23a;
+			}
+		</style>
+	</head>
+	<body>
+		<div id="app">
+
+
+		</div>
+
+	</body>
+	<script type="text/javascript" src="js/vue.min.js">
+
+	</script>
+
+	<script type="text/javascript">
+		// 声明全局组件 可以在任意组件中进行使用  Vue.componet('组件名称',{template:``,})
+		Vue.component('Vbtn', { // 声明并且已经挂载到全局 可以在任意地方使用
+			template: `
+				<!--以后封装组件可以以插头的方式封装-->
+				<!--插槽 内置组件 slot 做为承载分发内容的出口-->
+				<button class='default' :class='type'>
+					<slot>按钮</slot>
+				</button>
+			`,
+			props: ['type']
+		});
+
+
+		// 声明组件并挂载到App组件中
+		var Vheader = {
+			data() {
+				return {
+
+				}
+			},
+			template: `
+				<div>
+					我是头部组件
+					<Vbtn type='success'>成功按钮</Vbtn>
+				</dov>
+			`,
+		};
+
+		var Vaside = {
+			data() {
+				return {
+
+				}
+			},
+			template: `
+				<div>
+					我是侧边栏组件
+					<Vbtn type='primary'>主要按钮</Vbtn>
+				</div>
+			`,
+		}
+
+		var Vcontent = {
+			data() {
+				return {
+
+				}
+			},
+			template: `
+				<div>
+					我是内容组件
+					<Vbtn/>
+				</div>
+			`,
+		}
+
+
+
+
+		// 1、声明组件   组件内的data一定是一个函数，必须有返回值空值也行
+		var App = {
+			data() {
+				return {
+
+				}
+			},
+			template: `
+				<div>
+					<Vheader/>
+					<div>
+						<Vaside/>
+						<div>
+							<Vcontent/>
+						</div>
+					</div>
+				</div>
+				
+			`,
+			components: {
+				Vheader,
+				Vaside,
+				Vcontent
+			},
+		};
+
+		new Vue({
+			el: "#app",
+			data() {
+				return {
+
+				}
+			},
+			// 2、挂载
+			components: {
+				App
+			},
+			// 3、使用
+			template: `<App/>`,
+		});
+	</script>
+</html>

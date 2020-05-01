@@ -1,0 +1,73 @@
+<!DOCTYPE html>
+<html>
+	<head>
+		<meta charset="utf-8">
+		<title></title>
+	</head>
+	<body>
+		<div id="app">
+
+
+		</div>
+
+	</body>
+	<script type="text/javascript" src="js/vue.min.js">
+
+	</script>
+
+	<script type="text/javascript">
+		// 声明两个全局组件Parent  Child
+		Vue.component('Child', {
+			template: `
+				<div>
+					我是一个子组件
+					<input type='text' v-model='ChildData' v-on:input='changeValue(ChildData)'/>
+				</div>
+			`,
+			methods: {
+				changeValue(val) {
+					// 自定义事件childHeader一定通过$emit去触发
+					// 在函数中使用$emit触发自定义的事件childHeader
+					// $emit('自定义的事件名','要发送的消息')
+					this.$emit('childHeader', val)
+				}
+			},
+			props: ['ChildData'],
+		})
+
+		// 子组件往父组件传值
+		// 1、在父组件绑定自定义的事件
+		// 2、在子组件中触发原生的事件 在函数中使用$emit触发自定义的事件childHeader
+		Vue.component('Parent', {
+			data() {
+				return {
+					msg: "我是父组件数据"
+				}
+			},
+			template: `
+				<div>
+					我是一个父组件
+					<Child :ChildData='msg' @childHeader='childHeader'/>
+				</div>
+			`,
+			methods: {
+				childHeader(val) {
+					console.log(val);
+				}
+			}
+		})
+
+
+		new Vue({
+			el: "#app",
+			data() {
+				return {
+
+				}
+			},
+
+			// 使用组件
+			template: `<parent/>`,
+		});
+	</script>
+</html>

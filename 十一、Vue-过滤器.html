@@ -1,0 +1,70 @@
+<!DOCTYPE html>
+<html>
+	<head>
+		<meta charset="utf-8">
+		<title></title>
+	</head>
+	<body>
+		<div id="app">
+
+
+
+		</div>
+	</body>
+	<script type="text/javascript" src="js/vue.min.js">
+
+	</script>
+	<script type="text/javascript">
+		// 过滤器的作用：允许你自定义过滤器，可被用于一些常见的文本格式化
+		// 有两种：局部过滤器，全局过滤器
+
+		// 1）声明全局过滤器  arg是传过来的值
+		Vue.filter('myReverse', function(value, arg) {
+			return arg + value.split('').reverse().join('');
+		});
+
+
+		var App = {
+			data() {
+				return {
+					price: 0,
+					msg: 'hello world'
+				}
+			},
+			template: `
+				<div>
+					<input type="number" v-model='price' />
+					
+					<!--2、使用局部过滤器-->
+					<h3>{{price | myCorrentcy}}</h3>
+					
+					<!--2）使用全局过滤器-->
+					<h4>{{msg | myReverse("你好啊")}}</h4>
+				</div>
+			`,
+			// 使用参数filters声明局部过滤器
+			filters: {
+				// 1、声明局部过滤器
+				myCorrentcy: function(value) {
+					return '￥' + value
+				}
+			}
+
+		};
+
+		new Vue({
+			el: "#app",
+			data() {
+				return {
+
+				}
+			},
+			// 2、挂载
+			components: {
+				App
+			},
+			// 3、使用
+			template: `<App/>`,
+		});
+	</script>
+</html>

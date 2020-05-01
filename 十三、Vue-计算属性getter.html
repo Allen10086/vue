@@ -1,0 +1,82 @@
+<!DOCTYPE html>
+<html>
+	<head>
+		<meta charset="utf-8">
+		<title></title>
+		<style type="text/css">
+			ul li.active{
+				background-color:deepskyblue;
+			}
+		</style>
+	</head>
+	<body>
+		<div id="app">
+			<!--绑定计算属性的方法getCurrentSongSrc-->
+			<!--页面一加载立马调用getCurrentSongSrc方法-->
+			<audio autoplay controls v-bind:src='getCurrentSongSrc'></audio>
+			<ul>
+				<li v-for="(item,index) in musicData" @click='clickHandler(index)' :class='{active:initIndex==index}'>
+					<h3>{{item.id}} - 歌名：{{item.name}}</h3>
+					<p>歌手：{{item.author}}</p>
+				</li>
+			</ul>
+			
+		</div>
+	</body>
+	<script type="text/javascript" src="js/vue.min.js">
+
+	</script>
+	<script type="text/javascript">
+		var musicData = [{
+				id: 1,
+				name: '将故事写成我们',
+				author: '林俊杰',
+				songSrc: './static/将故事写成我们-林俊杰.mp3'
+			},
+			{
+				id: 2,
+				name: '像我这样的人',
+				author: '胖胖胖',
+				songSrc: './static/胖胖胖 - 像我这样的人.mp3'
+			},
+			{
+				id: 3,
+				name: '世间美好与你环环相扣 (薛之谦粉丝版)',
+				author: '韦小力',
+				songSrc: './static/韦小力 - 世间美好与你环环相扣 (薛之谦粉丝版).mp3'
+			},
+			{
+				id: 4,
+				name: '爱相随 (Live)',
+				author: '周华健',
+				songSrc: './static/周华健 - 爱相随 (Live).mp3'
+			},
+		]
+
+		new Vue({
+			el:'#app',
+			data(){
+				return {
+					musicData: musicData,
+					initIndex:0,
+					style:false,
+				}
+			},
+			// 计算属性实时监听musicData和initIndex  只要数据一修改立马执行监听函数
+			computed:{
+				// 计算属性默认只有getter
+				getCurrentSongSrc:function(){
+					return this.musicData[this.initIndex].songSrc
+				}
+			},
+			methods:{
+				clickHandler(index){
+					// 点击click事件后调用该方法切换歌曲
+					this.initIndex=index
+					
+					
+				}
+			}
+		});
+	</script>
+</html>

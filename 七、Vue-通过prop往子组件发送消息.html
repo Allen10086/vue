@@ -1,0 +1,60 @@
+<!DOCTYPE html>
+<html>
+	<head>
+		<meta charset="utf-8">
+		<title></title>
+	</head>
+	<body>
+		<div id="app">
+
+
+		</div>
+
+	</body>
+	<script type="text/javascript" src="js/vue.min.js">
+
+	</script>
+
+	<script type="text/javascript">
+		// 声明两个全局组件Parent  Child
+		Vue.component('Child', {
+			template: `
+				<div>
+					我是一个子组件
+					<input type='text' v-model='ChildData'/>
+				</div>
+			`,
+			props: ['ChildData']
+		})
+
+		// 1、先给父组件中绑定自定义属性 v-bind:属性名='数据'
+		// 2、在子组件中使用props接收父组件传递的数据
+		// 3、接收之后可以在子组件中任意使用
+		Vue.component('Parent', {
+			data() {
+				return {
+					msg: "我是父组件数据",
+				}
+			},
+			template: `
+				<div>
+					我是一个父组件
+					<Child v-bind:ChildData='msg'/>
+				</div>
+			`,
+		})
+
+
+		new Vue({
+			el: "#app",
+			data() {
+				return {
+
+				}
+			},
+		
+			// 使用组件
+			template: `<parent/>`,
+		});
+	</script>
+</html>

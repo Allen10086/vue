@@ -1,0 +1,102 @@
+<!DOCTYPE html>
+<html>
+	<head>
+		<meta charset="utf-8">
+		<title></title>
+		<!--导包-->
+		<script src="./js/vue.min.js" type="text/javascript" charset="utf-8"></script>
+		<style type="text/css">
+			.box{
+				width: 300px;
+				height:300px;
+				background-color:red;
+			}
+			.active{
+				background-color:green;
+			}
+		</style>
+	</head>
+	<body>
+		<div id="app">
+			
+
+		</div>
+
+
+	</body>
+	<script>
+		// 创建实例化对象
+
+		// v-text innertext  
+		// v-html innerhtml
+		// v-if 数据属性的值 如果为假 则不再页面中渲染反之亦然 （开销较大）
+		// v-show 控制dom元素的显示隐藏 控制display:none|block;    本质上无论真假都被渲染出来了
+		// v-bind 给标签绑定属性(系统属性，自定义属性) 控制类名(class)对元素显示隐藏display:none|block  简便写法 :class=
+		// v-on:原生事件名='我们声明的函数名'        绑定事件  简便写法 @:click
+		// v-for='(value,key) in menuList'         遍历对象
+		new Vue({
+			el: "#app",
+			data: function() {
+				return {
+					// 数据属性
+					msg: "指令系统",
+					msg2: '<a>innerhtml</a>',
+					isshow: true,
+					isgreen: false,
+					menuList: [
+						// 数组
+						{"id":1,name:"饺子",price:70},
+						{"id":2,name:"包子",price:80},
+						{"id":3,name:"豆干",price:90},
+						{"id":4,name:"土豆",price:30},
+					],
+					object:{
+						// 对象
+						name:"张三",
+						age:28,
+						sex:"男",
+					}
+				}
+			},
+			template: `
+				<div clss='app'>
+					<h2>{{msg}}</h2>
+					<p v-text='msg'></p>
+					<div v-html='msg2'></div>
+					
+					<div v-if='isshow'>如果为真就显示</div>
+					<div v-if='!isshow'>否则就隐藏</div>
+					
+					<div v-if='Math.random() > 0.5'>已显示</div>
+					<div v-else='Math.random() < 0.5'>已隐藏</div>
+					
+					<div v-show='isshow'>show已显示</div>
+					<div v-show='!isshow'>show已隐藏</div>
+					
+					<div class='box' v-bind:class='{active:isgreen}' v-on:click='clickHandler'></div>
+					
+					<ul>
+						<li v-for='(value,index) in menuList'>
+							<h3>{{value.id}}</h3>
+							<h3>{{value.name}}</h3>
+							<h3>{{value.price}}</h3>
+						</li>
+					</ul>
+					
+					<ul>
+						<li v-for='(value,key) in object'>
+							{{key}} === {{value}}
+						</li>
+					</ul>
+				</div>
+				`,
+				methods:{
+					clickHandler(e){
+						console.log(this)
+						// this.isgreen=true; // 绑定点击事件 改变isgreen值来改变颜色
+						this.isgreen=!this.isgreen;
+					}
+				}
+		})
+	</script>
+</html>

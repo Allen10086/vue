@@ -1,0 +1,57 @@
+<!DOCTYPE html>
+<html lang="zh">
+	<head>
+		<meta charset="UTF-8">
+		<meta name="viewport" content="width=device-width, initial-scale=1.0">
+		<meta http-equiv="X-UA-Compatible" content="ie=edge">
+		<title></title>
+	</head>
+	<body>
+		<div id="app">
+			<input type="text" v-model="msg">
+			<h3>{{msg}}</h3>
+			
+			<!--点击按钮重新给name赋值-->
+			<button @click="stus[0].name='henry'">改变</button>
+			<h4>{{stus[0].name}}</h4>	
+		</div>
+	</body>
+	<script type="text/javascript" src="js/vue.min.js">
+
+	</script>
+	<script type="text/javascript">
+		// watch-->监听的是单个属性 基本的数据类型
+		// 基本的数据类型  简单监视
+		// 复杂的数据类型  深度监视
+		
+		
+		new Vue({
+			el: '#app',
+			data() {
+				return {
+					msg: "",
+					stus:[{"name":"Lz12Code"}],
+				}
+			},
+			// 监听msg
+			watch: {
+				msg: function(newV, oldV) {
+					// newV(新值)    oldV(老值)
+					console.log(newV, oldV);
+					// 如果输入的值满足某一条件则进行下步处理
+					if (newV === 'hello') {
+						console.log("你输入了hello")
+					}
+				},
+				// 对于复杂的数据类型的用深度监听
+				stus:{
+					// 对于复杂类型的深度监视 object array
+					deep:true,
+					handler:function(newV,oldV){
+						console.log(newV)
+					}
+				}
+			}
+		})
+	</script>
+</html>

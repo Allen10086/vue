@@ -1,0 +1,40 @@
+<!DOCTYPE html>
+<html>
+	<head>
+		<meta charset="utf-8">
+		<title></title>
+		<script type="text/javascript" src="js/vue.min.js">
+
+		</script>
+	</head>
+	<body>
+		<div id="app">
+			<!--双向数据绑定只会体现在UI控件中 也就是有value属性的标签-->
+			<input type="text" :value="msg"> <!--单向数据绑定同v-bind:value='msg'-->
+			<p>{{msg}}</p>
+			
+			
+			<input type="text" v-model="msg2"> <!--双向数据绑定v-model="msg2"-->
+			<p>{{msg2}}</p>
+			
+		</div>
+	</body>
+	
+	<script type="text/javascript">
+		new Vue({
+			el:"#app",
+			data(){
+				return {
+					msg:"张三",
+					msg2:"李四",
+				}
+			}
+			
+			
+		});
+		
+		
+		
+	</script>
+	
+</html>

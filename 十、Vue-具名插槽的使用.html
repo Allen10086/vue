@@ -1,0 +1,56 @@
+<!DOCTYPE html>
+<html>
+	<head>
+		<meta charset="utf-8">
+		<title></title>
+	</head>
+	<body>
+		<div id="app">
+
+		</div>
+	</body>
+	<script type="text/javascript" src="js/vue.min.js">
+
+	</script>
+
+	<script type="text/javascript">
+		/*
+		<div class="container">
+		  <header>
+		    <!-- 我们希望把页头放这里 -->
+		  </header>
+		  <main>
+		    <!-- 我们希望把主要内容放这里 -->
+		  </main>
+		  <footer>
+		    <!-- 我们希望把页脚放这里 -->
+		  </footer>
+		</div>
+		*/
+		Vue.component('slot-name', {
+			template: `
+			<div>
+				<slot name="header"></slot>
+				
+				<!--一个不带 name 的 <slot> 出口会带有隐含的名字“default”。-->
+				<slot></slot>
+				
+				<slot name="footer"></slot>
+			</div>
+		   `
+		})
+		
+		new Vue({
+			el: "#app",
+			template: `
+				<!--使用全局组件slot-name-->
+				<slot-name>  
+					<p slot='header'>页头</p>
+					<p>内容</p>
+					<p slot='footer'>页脚</p>
+				</slot-name>
+				
+		   `
+		});
+	</script>
+</html>

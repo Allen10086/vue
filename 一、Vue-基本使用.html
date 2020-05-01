@@ -1,0 +1,66 @@
+<!DOCTYPE html>
+<html>
+	<head>
+		<meta charset="utf-8" />
+		<title></title>
+		<!--导包-->
+		<script src="./js/vue.min.js" type="text/javascript" charset="utf-8"></script>
+	</head>
+	<body>
+		<div id="app">
+
+			<p>{{text}}</p>
+			<!--插入文本-->
+
+			<span id="app" v-html='msg'></span>
+			<!--插入html-->
+
+			<a v-bind:href='url'>{{url}}</a>
+			<!--给标签添加属性-->
+
+			<p>{{titel.split("").reverse().join("")}}</p>
+			<!--JavaScript 表达式支持-->
+
+			<p v-if="seen">判断seen是否为真</p>
+			<!--指令-->
+
+			<p>{{message}}</p>
+			<button v-on:click="reverseMessage">点我</button>
+			<!--绑定事件-->
+
+
+			<p>{{res}}</p>
+			<input type="text" v-model="res">
+			<!--双向数据绑定-->
+			<!--v-model 指令用来在 input、select、textarea、checkbox、radio 等表单控件元素上创建双向数据绑定，根据表单上的值，自动更新绑定的元素的值-->
+			<!--只能绑定有value属性的标签-->
+
+			<div>{{istrue}}</div>
+		</div>
+
+
+	</body>
+
+	<script>
+		new Vue({ // 创建一个vue对象
+			el: '#app', // 标签定位
+			// 数据驱动视图
+			data: { // 既可以是一个对象 也可以是一个函数
+				text: '文本插入',
+				msg: '<h1>html插入</h1>',
+				url: 'www.baidu.com',
+				titel: 'HBuilder',
+				seen: true,
+				message: "反转字符串",
+				res: "双向数据绑定",
+				istrue: 1 == 1,
+			},
+			// template:`<div>{{text}}</div>`,  //如果template中定义了内容 优先加载template模板 否则加载#app模板
+			methods: {
+				reverseMessage: function(e) {
+					this.message = this.message.split('').reverse().join('')
+				}
+			}
+		})
+	</script>
+</html>

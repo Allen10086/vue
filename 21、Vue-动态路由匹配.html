@@ -1,0 +1,128 @@
+<!DOCTYPE html>
+<html>
+	<head>
+		<meta charset="utf-8">
+		<title></title>
+	</head>
+	<body>
+		<div id="app">
+
+		</div>
+	</body>
+	<script type="text/javascript" src="js/vue.min.js">
+
+	</script>
+	<script type="text/javascript" src=".\node_modules\vue-router\dist\vue-router.js">
+
+	</script>
+
+
+	<script type="text/javascript">
+		
+		/*
+		提醒一下，当使用路由参数时，例如从 /home/frontend 导航到 /home/backend，
+		原来的组件实例会被复用。因为两个路由都渲染同个组件，比起销毁再创建，复用则显得更加高效。
+		不过，这也意味着组件的生命周期钩子不会再被调用。
+		
+		复用组件时，想对路由参数的变化作出响应的话，你可以简单地 watch (监测变化) $route 对象：
+		官网：https://router.vuejs.org/zh/guide/essentials/dynamic-matching.html#%E5%93%8D%E5%BA%94%E8%B7%AF%E7%94%B1%E5%8F%82%E6%95%B0%E7%9A%84%E5%8F%98%E5%8C%96
+		*/ 
+		var ComDesc = {
+			data(){
+				return {
+					msg:''
+				}
+			},
+			template: `
+				<div>
+					{{msg}}
+				</div>
+			`,
+			created(){
+				// 组件加载完成后 初始化msg 为前端页面
+				this.msg='frontend';
+			},
+			// 在当前组件中监听路由变化
+			watch:{
+				'$route'(to,from){
+					// to 到指定路径
+					// form 从指定路径
+					console.log(to);
+					console.log(from);
+					// 对路由变化做出响应
+					// 发送ajax请求
+					this.msg=to.params.id  
+					
+				},
+			}
+		};
+
+		// 首页组件
+		var Home = {
+			template: `
+				<div>
+					<!--传递的参数id:frontend/backend-->
+					<router-link :to='{name:"comDesc",params:{id:"frontend"}}'>前端</router-link>
+					<router-link :to='{name:"comDesc",params:{id:"backend"}}'>后端</router-link>
+					<router-view></router-view>
+				</div>
+			`,
+		};
+		// 沸点组件
+		var Pins = {
+			template: `
+				<div>我是沸点</div>
+			`,
+		};
+
+		var App = {
+			template: `
+				<div>
+					<router-link to='/home'>首页</router-link>
+					<router-link to='/pins'>沸点</router-link>
+					<router-view></router-view>
+				</div>
+			`,
+		};
+
+		// 创建router对象
+		var router = new VueRouter({
+			// 配置路由对象
+			routes: [
+				// 路由匹配的规则
+				{
+					path: '/home',
+					component: Home,
+					children: [{
+						// 动态路由参数,以冒号开头
+						path: '/home/:id',
+						name: 'comDesc',
+						component: ComDesc,
+					}]
+				},
+				{
+					path: '/pins',
+					component: Pins,
+
+				},
+
+			]
+		});
+
+		new Vue({
+			el: '#app',
+			data() {
+				return {
+
+				}
+			},
+			template: `<App/>`,
+			router: router,
+			components: {
+				App
+			},
+
+
+		});
+	</script>
+</html>

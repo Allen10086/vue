@@ -1,0 +1,143 @@
+<!DOCTYPE html>
+<html>
+	<head>
+		<meta charset="utf-8">
+		<title></title>
+	</head>
+	<body>
+	</body>
+</html>
+<!DOCTYPE html>
+<html>
+	<head>
+		<meta charset="utf-8">
+		<title></title>
+	</head>
+	<body>
+		<div id="app">
+			<router-link to='/home'>首页</router-link>
+			<router-link to='/blog'>博客</router-link>
+			<router-link to='/login'>登录</router-link>
+
+			<router-view></router-view>
+		</div>
+	</body>
+	<script type="text/javascript" src="js/vue.min.js">
+
+	</script>
+	<script type="text/javascript" src=".\node_modules\vue-router\dist\vue-router.js">
+
+	</script>
+
+
+	<script type="text/javascript">
+		Vue.use(VueRouter); // 局部想要使用$router要先在全局挂载
+
+		// 首页组件
+		var Home = {
+			template: `
+				<div>
+					我是首页
+				</div>
+			`,
+		};
+		// 博客组件
+		var Blog = {
+			template: `
+				<div>我是博客</div>
+			`,
+
+		};
+		// 登陆组件
+		var Login = {
+			data() {
+				return {
+					name: '',
+					pwd: '',
+				}
+			},
+			template: `
+			<div>
+				<input type="text" v-model='name'/>
+				<input type="password" v-model='pwd'/>
+				<input type="button" name="login" value='登录' @click='clickHandler'/>
+			</div>
+			`,
+			methods: {
+				clickHandler() {
+					// 点击登录时我们将账户和密码保存在浏览器中
+					console.log(this.name);
+					console.log(this.pwd);
+					localStorage.setItem('user', {
+						name: this.name,
+						pwd: this.pwd
+					});
+					// 登录成功后跳转到博客页面
+					this.$router.push({
+						name: 'blog' // 命名路由
+					})
+				}
+			}
+		};
+		// 创建router对象
+		var router = new VueRouter({
+			// 配置路由对象
+			routes: [
+				// 路由匹配的规则
+				{
+					path: '/',
+					redirect: '/home' // 重定向：当访问根/时跳转到home页面
+				},
+				{
+					path: '/home',
+					component: Home,
+
+				},
+				{
+					path: '/blog',
+					name: 'blog',
+					component: Blog,
+					// 给未来的路由做权限控制
+					meta: {
+						// 证明用户访问该组件的时候需要登录
+						auth: true
+					}
+
+				},
+				{
+					path: '/login',
+					component: Login,
+				},
+
+			]
+		});
+
+		// 全局守卫   守卫路由的切换  路由在切换的时候会调用该方法
+		router.beforeEach((to, from, next) => {
+			if (to.meta.auth){   // 判断要访问的组件是否需要登录
+				if (localStorage.getItem('user')) {
+					next()  // 判断我们保存用户信息的位置 如果有值就放行
+				} else {
+					next({
+						path: '/login'  // 没有值九跳转到登录页
+					});
+				}
+			}
+			
+			next(); // 必须调用next()方法  不调用会夯住
+		});
+
+
+		new Vue({
+			el: '#app',
+			data() {
+				return {
+
+				}
+			},
+			router: router,
+
+
+		});
+	</script>
+</html>

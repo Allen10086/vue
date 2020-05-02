@@ -1,0 +1,45 @@
+<!DOCTYPE html>
+<html>
+	<head>
+		<meta charset="utf-8">
+		<title></title>
+	</head>
+	<body>
+		<a href="#/login">登录页面</a>
+		<a href="#/register">注册页面</a>
+		<div id="app">
+
+		</div>
+	</body>
+	<script type="text/javascript" src="js/vue.min.js">
+
+	</script>
+	<script type="text/javascript">
+		/*
+		路由实现：
+		1、传统开发方式url改变后，立刻发生请求响应整个页面，有可能资源过多，出现白屏现象。
+		2、SPA 单页面应用 SIn'gle Page Application
+		锚点值改变后
+		不会立刻发送请求，而是在某个合适的时机，发起ajax请求 页面局部渲染
+		优点：页面不会立刻跳转  用户体验好
+		*/
+		var oDiv = document.getElementById('app');
+
+		// onhashchange 事件在当前 URL 的锚部分(以 '#' 号为开始) 发生改变时触发 。
+		window.onhashchange = function() {
+			console.log(location.hash);
+			switch (location.hash) {
+				case '#/login':
+					oDiv.innerHTML = '<h2>欢迎来到登录页面</h2>'
+					break
+				case '#/register':
+					oDiv.innerHTML = '<h2>欢迎来到注册页面</h2>'
+					break
+				default:
+					oDiv.innerHTML = '<h2>默认要处理的逻辑</h2>'
+					break
+
+			}
+		}
+	</script>
+</html>

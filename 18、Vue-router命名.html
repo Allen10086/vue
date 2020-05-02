@@ -1,0 +1,91 @@
+<!DOCTYPE html>
+<html>
+	<head>
+		<meta charset="utf-8">
+		<title></title>
+	</head>
+	<body>
+		<div id="app">
+
+		</div>
+	</body>
+	<script type="text/javascript" src="js/vue.min.js">
+		// 下载vue-router  项目目录下：npm install vue-router 
+		// 1、vue-router依赖于Vue  所以要引入Vue模块
+	</script>
+	<script type="text/javascript" src=".\node_modules\vue-router\dist\vue-router.js">
+		// 2、引入vue-router
+	</script>
+
+	<script type="text/javascript">
+		// 3、让Vue 使用VueRouter创建
+		// Vue.use(VueRouter);
+		
+		// 登陆组件
+		var Login={
+			template:`
+				<div>我是登陆页面</div>
+			`,
+		};
+		// 注册组件
+		var Register={
+			template:`
+				<div>我是注册页面</div>
+			`,
+		};
+		
+		// 4、创建router对象
+		var router = new VueRouter({
+			// 5、配置路由对象
+			routes:[
+				// 路由匹配的规则
+				{
+					path:'/login',
+					component:Login,
+					// 给当前路由命名
+					name:'login',
+				},
+				{
+					path:'/Register',
+					component:Register,
+					// 给当前路由命名
+					name:'register',
+				},
+			]
+		});
+		
+		// 引入vue-router模块后 会抛出两个全局组件 
+		// 1）router-link 相当于a标签，里面的to属性相当于href属性
+		// 2）router-view 路由匹配组件出口 (它渲染的组件是你使用 vue-router 指定的)
+		var App={
+			template:`
+				<div>
+					<!--绑定to属性 通过路由名字匹配对应的组件-->
+					<router-link :to='{name:"login"}'>登陆页面</router-link>
+					<router-link :to='{name:"register"}'>注册页面</router-link>
+					<router-view></router-view>
+				</div>
+				
+			`,
+		}
+
+		new Vue({
+			el: '#app',
+			data() {
+				return {
+
+				}
+			},
+			components:{
+				App
+			},
+			// 6、交给Vue实例化对象管理
+			router:router,
+			template:`
+				<App/>
+			
+			`,
+			
+		});
+	</script>
+</html>

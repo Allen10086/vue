@@ -1,0 +1,54 @@
+<!DOCTYPE html>
+<html>
+	<head>
+		<meta charset="utf-8">
+		<title></title>
+	</head>
+	<body>
+		<div id="app"></div>
+	</body>
+	<script type="text/javascript" src="js/vue.js"></script>
+	<!--导包-->
+	<script type="text/javascript" src="./node_modules/axios/dist/axios.js"></script>
+	<script type="text/javascript">
+		// Vue.use(axios)   // 挂载到全局
+		Vue.prototype.$axios = axios;
+		
+		var App={
+			template:`
+				<div>
+					<button @click='senAjax'>发起请求</button>
+				</div>
+			`,
+			methods:{
+				// 基本使用
+				senAjax(){
+					this.$axios.get('http://127.0.0.1:8888/')
+					// 请求成功后的响应数据
+					.then(res=>{
+						console.log(res);
+					})
+					// 报错响应数据
+					.catch(err=>{
+						console.log(err)
+					})
+				}
+			}
+		};
+		
+		new Vue({
+			el:'#app',
+			data(){
+				return {
+					
+				}
+			},
+			template:`<App/>`,
+			components:{
+				App
+			}
+		});
+		
+		
+	</script>
+</html>

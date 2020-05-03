@@ -1,0 +1,140 @@
+<!DOCTYPE html>
+<html>
+	<head>
+		<meta charset="utf-8">
+		<title></title>
+		<style type="text/css">
+			.spinner {
+				width: 60px;
+				height: 60px;
+				background-color: #67CF22;
+
+				margin: 100px auto;
+				-webkit-animation: rotateplane 1.2s infinite ease-in-out;
+				animation: rotateplane 1.2s infinite ease-in-out;
+			}
+
+			@-webkit-keyframes rotateplane {
+				0% {
+					-webkit-transform: perspective(120px)
+				}
+
+				50% {
+					-webkit-transform: perspective(120px) rotateY(180deg)
+				}
+
+				100% {
+					-webkit-transform: perspective(120px) rotateY(180deg) rotateX(180deg)
+				}
+			}
+
+			@keyframes rotateplane {
+				0% {
+					transform: perspective(120px) rotateX(0deg) rotateY(0deg);
+					-webkit-transform: perspective(120px) rotateX(0deg) rotateY(0deg)
+				}
+
+				50% {
+					transform: perspective(120px) rotateX(-180.1deg) rotateY(0deg);
+					-webkit-transform: perspective(120px) rotateX(-180.1deg) rotateY(0deg)
+				}
+
+				100% {
+					transform: perspective(120px) rotateX(-180deg) rotateY(-179.9deg);
+					-webkit-transform: perspective(120px) rotateX(-180deg) rotateY(-179.9deg);
+				}
+			}
+		</style>
+	</head>
+	<body>
+		<div id="app">
+
+
+		</div>
+	</body>
+	<script type="text/javascript" src="js/vue.js"></script>
+	<!--导包-->
+	<script type="text/javascript" src="./node_modules/axios/dist/axios.js"></script>
+	<script type="text/javascript">
+		Vue.prototype.$axios = axios; // 挂载到全局
+
+		var App = {
+			data() {
+				return {
+					isShow: false
+				}
+			},
+			template: `
+				<div>
+					<button @click='senAjax'>发起请求</button>
+					<div class="spinner" v-show='isShow'></div>
+				</div>
+			`,
+			methods: {
+				// 基本使用
+				senAjax() {
+					// 添加请求拦截器
+					this.$axios.interceptors.request.use(function(config) {
+						// 在发送请求之前做些什么
+						var token = localStorage.getItem('token');
+						if (token) {
+							config.headers['token'] = token;
+
+						}
+						// 在请求之前显示加载动画
+						this.isShow = true
+						console.log(this.isShow)
+						return config;
+					}, function(error) {
+						// 对请求错误做些什么
+						return Promise.reject(error);
+					});
+
+					// 添加响应拦截器
+					this.$axios.interceptors.response.use(function(response) {
+						// 对响应数据做点什么
+						console.log(response.data.token);
+						// 判断服务器响应回来的数据是否有token 如果有token就保存在浏览器中
+						if (response.data.token) {
+							// 将token保存在浏览器的localStorage中
+							localStorage.setItem('token', response.data.token);
+						}
+						
+						// 在数据响应之后关闭动画
+						this.isShow = false
+						console.log(this.isShow)
+						return response;
+					}, function(error) {
+						// 对响应错误做点什么
+						return Promise.reject(error);
+					});
+
+					// 发起请求
+					this.$axios.get('http://127.0.0.1:8888')
+						.then(res => {
+							console.log(res);
+						})
+						.catch(err => {
+							console.log(err)
+						})
+				}
+			}
+		};
+
+		new Vue({
+			el: '#app',
+			data() {
+				return {
+
+				}
+			},
+			template: `<App/>`,
+			components: {
+				App
+			}
+		});
+	</script>
+</html>
+
+<!--官网：https://www.kancloud.cn/yunye/axios/234845-->
+<!--动画：https://www.cnblogs.com/lhb25/p/loading-spinners-animated-with-css3.html-->
